@@ -7,9 +7,13 @@ services:
       - "8080:8080"
     depends_on:
       - rabbitmq
+      - postgres
     environment:
+      - SPRING_PROFILES_ACTIVE=prod
       - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/stockdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -19,3 +23,17 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=stockdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

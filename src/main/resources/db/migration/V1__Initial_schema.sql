@@ -1,0 +1,2 @@
+-- V1__Initial_schema.sql
+-- This file is for PostgreSQL migrations. JPA will handle schema creation for H2 in dev mode.
