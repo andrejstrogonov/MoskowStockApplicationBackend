@@ -2,6 +2,7 @@ package org.andrejstrogonov.moskowstockapplicationbackend.controller;
 
 import org.andrejstrogonov.moskowstockapplicationbackend.dto.*;
 import org.andrejstrogonov.moskowstockapplicationbackend.service.CalculatorService;
+import org.andrejstrogonov.moskowstockapplicationbackend.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,9 +52,13 @@ class GoalController {
     @Autowired
     private CalculatorService calculatorService;
 
+    @Autowired
+    private ProducerService producerService;
+
     @PostMapping("/generate-goal")
-    public ResponseEntity<GoalResponse> generateGoalPortfolio(@RequestBody GoalRequest request) {
-        GoalResponse response = calculatorService.generateGoalPortfolio(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> generateGoalPortfolio(@RequestBody GoalRequest request) {
+        // Send request to RabbitMQ for async processing
+        producerService.sendPortfolioGenerationRequest(request);
+        return ResponseEntity.accepted().body("Portfolio generation request accepted. Processing asynchronously.");
     }
 }

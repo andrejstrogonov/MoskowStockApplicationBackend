@@ -3,6 +3,7 @@ package org.andrejstrogonov.moskowstockapplicationbackend.controller;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.Instrument;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.InstrumentType;
 import org.andrejstrogonov.moskowstockapplicationbackend.service.InstrumentService;
+import org.andrejstrogonov.moskowstockapplicationbackend.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class InstrumentController {
 
     @Autowired
     private InstrumentService instrumentService;
+
+    @Autowired
+    private ProducerService producerService;
 
     @GetMapping
     public ResponseEntity<List<Instrument>> getInstruments(@RequestParam(required = false) String type) {
@@ -47,6 +51,8 @@ public class InstrumentController {
     public ResponseEntity<Instrument> updateInstrument(@PathVariable String id, @RequestBody Instrument instrument) {
         Instrument updated = instrumentService.updateInstrument(id, instrument);
         if (updated != null) {
+            // Send update to RabbitMQ for async processing
+            producerService.sendMarketDataUpdate(updated);
             return ResponseEntity.ok(updated);
         }
         return ResponseEntity.notFound().build();
