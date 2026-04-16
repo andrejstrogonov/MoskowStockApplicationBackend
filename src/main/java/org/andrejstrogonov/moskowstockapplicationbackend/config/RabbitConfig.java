@@ -5,29 +5,31 @@ import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableRabbit
+@ConditionalOnProperty(name = "spring.rabbitmq.host", havingValue = "localhost", matchIfMissing = true)
 public class RabbitConfig {
 
-    @Value("${rabbitmq.exchange.market-data}")
+    @Value("${rabbitmq.exchange.market-data:market.data.exchange}")
     private String marketDataExchange;
 
-    @Value("${rabbitmq.exchange.portfolio}")
+    @Value("${rabbitmq.exchange.portfolio:portfolio.exchange}")
     private String portfolioExchange;
 
-    @Value("${rabbitmq.queue.market-data-updates}")
+    @Value("${rabbitmq.queue.market-data-updates:market.data.updates}")
     private String marketDataUpdatesQueue;
 
-    @Value("${rabbitmq.queue.portfolio-generation}")
+    @Value("${rabbitmq.queue.portfolio-generation:portfolio.generation}")
     private String portfolioGenerationQueue;
 
-    @Value("${rabbitmq.queue.dead-letter}")
+    @Value("${rabbitmq.queue.dead-letter:dead.letter.queue}")
     private String deadLetterQueue;
 
-    @Value("${rabbitmq.routing-key.market-data}")
+    @Value("${rabbitmq.routing-key.market-data:stock.update.*}")
     private String marketDataRoutingKey;
 
     // Topic Exchange for market data (flexible routing)

@@ -52,13 +52,19 @@ class GoalController {
     @Autowired
     private CalculatorService calculatorService;
 
-    @Autowired
+    @Autowired(required = false)
     private ProducerService producerService;
 
     @PostMapping("/generate-goal")
     public ResponseEntity<String> generateGoalPortfolio(@RequestBody GoalRequest request) {
-        // Send request to RabbitMQ for async processing
-        producerService.sendPortfolioGenerationRequest(request);
-        return ResponseEntity.accepted().body("Portfolio generation request accepted. Processing asynchronously.");
+        if (producerService != null) {
+            // Send request to RabbitMQ for async processing
+            producerService.sendPortfolioGenerationRequest(request);
+            return ResponseEntity.accepted().body("Portfolio generation request accepted. Processing asynchronously.");
+        } else {
+            // Fallback to sync processing
+            GoalResponse response = calculatorService.generateGoalPortfolio(request);
+            return ResponseEntity.ok("Portfolio generated synchronously.");
+        }
     }
 }

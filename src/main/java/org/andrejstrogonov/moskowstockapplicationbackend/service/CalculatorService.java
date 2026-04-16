@@ -1,6 +1,7 @@
 package org.andrejstrogonov.moskowstockapplicationbackend.service;
 
 import org.andrejstrogonov.moskowstockapplicationbackend.dto.*;
+import org.andrejstrogonov.moskowstockapplicationbackend.model.Portfolio;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

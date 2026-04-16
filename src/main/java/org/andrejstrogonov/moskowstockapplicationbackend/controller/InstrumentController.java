@@ -18,7 +18,7 @@ public class InstrumentController {
     @Autowired
     private InstrumentService instrumentService;
 
-    @Autowired
+    @Autowired(required = false)
     private ProducerService producerService;
 
     @GetMapping
@@ -52,7 +52,9 @@ public class InstrumentController {
         Instrument updated = instrumentService.updateInstrument(id, instrument);
         if (updated != null) {
             // Send update to RabbitMQ for async processing
-            producerService.sendMarketDataUpdate(updated);
+            if (producerService != null) {
+                producerService.sendMarketDataUpdate(updated);
+            }
             return ResponseEntity.ok(updated);
         }
         return ResponseEntity.notFound().build();
