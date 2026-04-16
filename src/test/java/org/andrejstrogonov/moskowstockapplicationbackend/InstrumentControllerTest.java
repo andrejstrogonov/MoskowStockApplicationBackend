@@ -1,10 +1,12 @@
 package org.andrejstrogonov.moskowstockapplicationbackend;
 
 import org.andrejstrogonov.moskowstockapplicationbackend.controller.InstrumentController;
+import org.andrejstrogonov.moskowstockapplicationbackend.model.Bond;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.Instrument;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.InstrumentType;
+import org.andrejstrogonov.moskowstockapplicationbackend.model.Stock;
 import org.andrejstrogonov.moskowstockapplicationbackend.service.InstrumentService;
-import org.andrejstrogonov.moskowstockapplicationbackend.messaging.ProducerService;
+import org.andrejstrogonov.moskowstockapplicationbackend.service.ProducerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -39,7 +41,7 @@ class InstrumentControllerTest {
 
     @Test
     void testGetInstruments() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setId("1");
         instrument.setName("Test Stock");
         instrument.setType(InstrumentType.STOCK);
@@ -56,7 +58,7 @@ class InstrumentControllerTest {
 
     @Test
     void testGetInstrumentsByType() {
-        Instrument instrument = new Instrument();
+        Bond instrument = new Bond();
         instrument.setId("1");
         instrument.setName("Test Bond");
         instrument.setType(InstrumentType.BOND);
@@ -81,7 +83,7 @@ class InstrumentControllerTest {
 
     @Test
     void testGetInstrument() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setId("1");
         instrument.setName("Test Instrument");
 
@@ -106,7 +108,7 @@ class InstrumentControllerTest {
 
     @Test
     void testCreateInstrument() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setName("New Instrument");
 
         when(instrumentService.createInstrument(any(Instrument.class))).thenReturn(instrument);
@@ -120,7 +122,7 @@ class InstrumentControllerTest {
 
     @Test
     void testUpdateInstrument() {
-        Instrument updatedInstrument = new Instrument();
+        Stock updatedInstrument = new Stock();
         updatedInstrument.setId("1");
         updatedInstrument.setName("Updated Instrument");
 
@@ -136,12 +138,12 @@ class InstrumentControllerTest {
 
     @Test
     void testUpdateInstrumentNotFound() {
-        when(instrumentService.updateInstrument("1", new Instrument())).thenReturn(null);
+        when(instrumentService.updateInstrument("1", new Stock())).thenReturn(null);
 
-        ResponseEntity<Instrument> response = instrumentController.updateInstrument("1", new Instrument());
+        ResponseEntity<Instrument> response = instrumentController.updateInstrument("1", new Stock());
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(instrumentService, times(1)).updateInstrument("1", new Instrument());
+        verify(instrumentService, times(1)).updateInstrument("1", new Stock());
         verify(producerService, never()).sendMarketDataUpdate(any());
     }
 

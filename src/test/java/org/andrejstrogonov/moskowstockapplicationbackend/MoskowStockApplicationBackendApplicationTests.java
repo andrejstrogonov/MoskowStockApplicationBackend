@@ -2,6 +2,7 @@ package org.andrejstrogonov.moskowstockapplicationbackend;
 
 import org.andrejstrogonov.moskowstockapplicationbackend.model.Instrument;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.InstrumentType;
+import org.andrejstrogonov.moskowstockapplicationbackend.model.Stock;
 import org.andrejstrogonov.moskowstockapplicationbackend.repository.InstrumentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ class MoskowStockApplicationBackendApplicationTests {
 
     @Test
     void testInstrumentRepository() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setTicker("TEST");
         instrument.setName("Test Instrument");
         instrument.setType(InstrumentType.STOCK);

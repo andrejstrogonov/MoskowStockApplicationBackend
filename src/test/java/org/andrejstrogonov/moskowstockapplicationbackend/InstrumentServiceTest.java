@@ -1,7 +1,9 @@
 package org.andrejstrogonov.moskowstockapplicationbackend;
 
+import org.andrejstrogonov.moskowstockapplicationbackend.model.Bond;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.Instrument;
 import org.andrejstrogonov.moskowstockapplicationbackend.model.InstrumentType;
+import org.andrejstrogonov.moskowstockapplicationbackend.model.Stock;
 import org.andrejstrogonov.moskowstockapplicationbackend.repository.InstrumentRepository;
 import org.andrejstrogonov.moskowstockapplicationbackend.service.InstrumentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ class InstrumentServiceTest {
 
     @Test
     void testGetAllInstruments() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setId("1");
         instrument.setName("Test Stock");
         instrument.setType(InstrumentType.STOCK);
@@ -50,7 +51,7 @@ class InstrumentServiceTest {
 
     @Test
     void testGetInstrumentsByType() {
-        Instrument instrument = new Instrument();
+        Bond instrument = new Bond();
         instrument.setId("1");
         instrument.setName("Test Bond");
         instrument.setType(InstrumentType.BOND);
@@ -66,7 +67,7 @@ class InstrumentServiceTest {
 
     @Test
     void testGetInstrumentById() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setId("1");
         instrument.setName("Test Instrument");
 
@@ -81,7 +82,7 @@ class InstrumentServiceTest {
 
     @Test
     void testCreateInstrument() {
-        Instrument instrument = new Instrument();
+        Stock instrument = new Stock();
         instrument.setName("New Instrument");
 
         when(instrumentRepository.save(any(Instrument.class))).thenReturn(instrument);
@@ -95,11 +96,11 @@ class InstrumentServiceTest {
 
     @Test
     void testUpdateInstrument() {
-        Instrument existing = new Instrument();
+        Stock existing = new Stock();
         existing.setId("1");
         existing.setName("Old Name");
 
-        Instrument updated = new Instrument();
+        Stock updated = new Stock();
         updated.setName("New Name");
 
         when(instrumentRepository.existsById("1")).thenReturn(true);
@@ -117,7 +118,7 @@ class InstrumentServiceTest {
     void testUpdateInstrumentNotFound() {
         when(instrumentRepository.existsById("1")).thenReturn(false);
 
-        Instrument result = instrumentService.updateInstrument("1", new Instrument());
+        Instrument result = instrumentService.updateInstrument("1", new Stock());
 
         assertNull(result);
         verify(instrumentRepository, times(1)).existsById("1");
