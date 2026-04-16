@@ -1,0 +1,12 @@
+target/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+.env
+node_modules/
+.git/
+.gitignore
