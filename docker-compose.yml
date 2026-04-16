@@ -14,6 +14,17 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/stockdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
+      - LOGGING_LEVEL_ROOT=WARN
+      - LOGGING_LEVEL_ORG_ANDREJSTROGONOV=INFO
+      - LOGGING_FILE_NAME=/var/log/application.log
+    volumes:
+      - app_logs:/var/log
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+        labels: "service=stock-app"
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -23,6 +34,14 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+        labels: "service=rabbitmq"
 
   postgres:
     image: postgres:15
@@ -34,6 +53,14 @@ services:
       - POSTGRES_PASSWORD=password
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+        labels: "service=postgres"
 
 volumes:
   postgres_data:
+  rabbitmq_data:
+  app_logs:
