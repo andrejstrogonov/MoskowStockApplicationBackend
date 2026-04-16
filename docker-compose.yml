@@ -13,7 +13,7 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/stockdb
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - LOGGING_LEVEL_ROOT=WARN
       - LOGGING_LEVEL_ORG_ANDREJSTROGONOV=INFO
       - LOGGING_FILE_NAME=/var/log/application.log
@@ -50,7 +50,7 @@ services:
     environment:
       - POSTGRES_DB=stockdb
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     logging:
