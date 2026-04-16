@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class InstrumentControllerTest {
@@ -138,12 +139,13 @@ class InstrumentControllerTest {
 
     @Test
     void testUpdateInstrumentNotFound() {
-        when(instrumentService.updateInstrument("1", new Stock())).thenReturn(null);
+        Stock stock = new Stock();
+        when(instrumentService.updateInstrument(eq("1"), any(Stock.class))).thenReturn(null);
 
-        ResponseEntity<Instrument> response = instrumentController.updateInstrument("1", new Stock());
+        ResponseEntity<Instrument> response = instrumentController.updateInstrument("1", stock);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(instrumentService, times(1)).updateInstrument("1", new Stock());
+        verify(instrumentService, times(1)).updateInstrument("1", stock);
         verify(producerService, never()).sendMarketDataUpdate(any());
     }
 
